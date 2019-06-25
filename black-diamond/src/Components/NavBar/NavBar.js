@@ -7,15 +7,18 @@ class NavBar extends Component {
     return (
       <div>
         <div className="navbar-container">
-          <div className="logo-container">
-            <img className="logo-image" src={Logo} alt="" />
-          </div>
+        <button className="logo-container">
+            <img className="logo-image" src={Logo} alt="" onClick={() => this.props.navigate('store')} />
+        </button>
 
           <div className="navbar-links-container">
             <ul className="navbar-links">
+          
               <li onClick={() => this.props.navigate('store')}>Store</li>
               <li onClick={() => this.props.navigate('cart')}>Shopping Cart</li>
+              <div className= 'counter'> {this.props.counter}  </div>
             </ul>
+
           </div>
         </div>
         <hr />

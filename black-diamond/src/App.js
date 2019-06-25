@@ -10,11 +10,15 @@ class App extends Component {
     this.state = {
       products: [],
       cart: [],
-      showCart: false
+      showCart: false,
+      counter: 0
     };
     this.addToCart = this.addToCart.bind(this)
     this.removeFromCart = this.removeFromCart.bind(this)
     this.navigate = this.navigate.bind(this)
+    this.cartCounter = this.cartCounter.bind(this)
+    this.cartSubtract = this.cartSubtract.bind(this)
+    
   }
   componentDidMount() {
     axios
@@ -25,17 +29,30 @@ class App extends Component {
         });
       });
   }
+
+  cartSubtract(){
+    this.setState({counter: this.state.cart.length -1})
+  }
+
+  cartCounter() {
+    
+    this.setState({counter: this.state.cart.length +1})
+  }
+
   addToCart(item) {
     this.setState({
       cart: [...this.state.cart, item]
+      
     });
+    this.cartCounter()
   }
   removeFromCart(index) {
     let cartCopy = this.state.cart.slice();
     cartCopy.splice(index, 1);
     this.setState({
       cart: cartCopy
-    });
+    })
+    this.cartSubtract()
   }
   navigate(location) {
     if (location === "cart") {
@@ -49,15 +66,15 @@ class App extends Component {
     }
   }
   render() {
-    const { products, cart, showCart } = this.state;
+    const { products, cart, showCart,counter } = this.state;
     return (
       <div className="App">
-        <NavBar navigate={this.navigate} />
+        <NavBar navigate={this.navigate} counter = {counter} cartCounter = {this.cartCounter}/>
         <div className="main-container">
           {showCart ? (
             <ShoppingCart cart={cart} removeFromCart={this.removeFromCart} />
           ) : (
-            <StoreFront products={products} addToCart={this.addToCart} />
+            <StoreFront products={products} addToCart={this.addToCart} onchange={e => e.target.value} />
           )}
         </div>
       </div>
